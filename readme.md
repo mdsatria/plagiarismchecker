@@ -10,17 +10,20 @@
     4. Install dependencies 'pip install -r requirements.txt'
 
 ## Usage Guide :
-### Documents data
-
+### Data placement
     1. Place all documents with same file extension in one folder e.g. D:\documents\
 
-### Program run 
-
+### Running program
     1. cd to plagiarismchecker local repo
     2. Activate environment
     2. Run python plagiarismchecker.py
     5. Enter documents directory 'D:\documents\'
     6. Enter document type (word/pdf/text) 'word'
 
-## Ouput
+
+## Notebook
 Check [this notebook](https://github.com/mdsatria/plagiarismchecker/blob/master/plagiarismchecker.ipynb) for output
+
+## Output
+
+
