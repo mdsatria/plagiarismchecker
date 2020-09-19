@@ -34,9 +34,13 @@ class corpusSimID:
         self.file_type = file_type
     
     def __len__(self):
+        """return number of documents
+        """
         return len(self.files)
     
     def get_doc(self, filename):
+        """Extract text from docx file
+        """
         doc = docx.Document(self.path+filename)
         fullText = []
         for para in doc.paragraphs:
@@ -48,6 +52,8 @@ class corpusSimID:
     
     
     def get_pdf(self, filename):
+        """Extract text from pdf file
+        """
         doc = fitz.open(self.path+filename)
         fullText = []
         for i in range (doc.pageCount):
@@ -59,12 +65,21 @@ class corpusSimID:
     
     
     def get_text(self, filename):
+        """Extract text from txt file
+        """
         with open(self.path+filename) as file:
             text = file.read().replace("\n", " ")
         return text
 
 
     def get_corpus(self):
+        """Extract corpus from documents
+        
+        Return 2d python list 
+            1st column: file name
+            2nd column: words in i-th document after tokenization
+            3rd column: words in i-th document after stemming
+        """
         factory = StemmerFactory()
         stemmer = factory.create_stemmer()
 
@@ -84,7 +99,13 @@ class corpusSimID:
         return text_files
 
     
-    def get_tfidf(self):        
+    def get_tfidf(self):
+        """Extract TF-IDF features from corpus
+        
+        Return two variables
+            1st variable: tf-idf in 2d array. column is number of document, row is feature
+            2nd variable: words list in corpus
+        """        
         rawData = self.get_corpus()
         corpus = [column[2] for column in rawData]
         
@@ -95,6 +116,10 @@ class corpusSimID:
     
     
     def get_similarity(self):
+        """Calculate pairwise similarity among documents based on cosine similarity
+        
+        Return similarity matrix
+        """
         corpus, _ = self.get_tfidf()
         return cosine_similarity(corpus)
 
