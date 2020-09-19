@@ -12,4 +12,4 @@
     6. Enter document type (word/pdf/text) 
 
 ## Ouput
-    Check <a href=>link</a> for output
+    Check [this notebook](https://github.com/mdsatria/plagiarismchecker/blob/master/plagiarismchecker.ipynb) for output
