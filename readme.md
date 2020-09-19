@@ -25,5 +25,4 @@
 Check [this notebook](https://github.com/mdsatria/plagiarismchecker/blob/master/plagiarismchecker.ipynb) for output
 
 ## Output
-
-
+![IMAGE ALT TEXT HERE](https://raw.githubusercontent.com/mdsatria/plagiarismchecker/master/resources/screenshot.png)
