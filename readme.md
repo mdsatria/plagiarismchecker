@@ -31,6 +31,6 @@
 
 
 ## Output
-![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/blob/master/resources/terminal.gif?raw=true)*running script on powershell*
+![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/raw/master/resources/run_terminal.gif)*running script on powershell*
 
-![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/blob/master/resources/flask.gif?raw=true)*running web app*
+![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/raw/master/resources/run_web.gif)*running web app*
