@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request
+
 from plagiarismchecker import corpusSimID
+
 from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import INLINE
 from bokeh.util.string import encode_utf8
 from bokeh import palettes
 from bokeh.models import LinearColorMapper, ColorBar, PrintfTickFormatter
+
 from math import pi
 
 app = Flask(__name__)
@@ -24,10 +27,12 @@ def index():
         df = obj.get_dataframe()
         corp = obj.get_file()
         # return render_template('result.html', url='/static/images/{}.png'.format(ts))
+        
         colors = list(reversed(palettes.viridis(100)))
-
         mapper = LinearColorMapper(palette=colors, low=0, high=100)
+        
         TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
+        
         hm = figure(x_range=corp, y_range=list(reversed(corp)), x_axis_location="above",
                     plot_width=900,
                     plot_height=900,

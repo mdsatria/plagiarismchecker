@@ -1,3 +1,6 @@
+"""
+Made Satria Wibawa @20202
+"""
 import re
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -180,8 +183,7 @@ class corpusSimID:
                 k = k+1
         df['c'] = (df['c'].round(2)) * 100
         return df
-        
-        
+
         
         
 if __name__=='__main__':
