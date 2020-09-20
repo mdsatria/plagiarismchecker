@@ -1,14 +1,17 @@
 import re
 import seaborn as sns
 import matplotlib.pyplot as plt
+import pandas as pd
 import os
 import docx
 import fitz
+import numpy as np
 
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 class corpusSimID:
     """Pairwise Cosine Similarity among Indonesian documents.
@@ -22,7 +25,7 @@ class corpusSimID:
         path : directory all located document. example: "C:/doc/data"
         file_type : file type of documents. "word" for Microsoft Word documents. File extension .docx. "pdf" for PDF file. File extension .pdf. "text" for text file. File extension .txt
     """
-    def __init__(self, path, file_type="text"):
+    def __init__(self, path, stem="yes", file_type="text"):
         files = os.listdir(path)
         self.path = path
         if (file_type=="text"):
@@ -32,6 +35,7 @@ class corpusSimID:
         elif (file_type=="pdf"):
             self.files = [i for i in files if i.endswith('.pdf')]
         self.file_type = file_type
+        self.stem = stem
     
     def __len__(self):
         """return number of documents
@@ -71,6 +75,8 @@ class corpusSimID:
             text = file.read().replace("\n", " ")
         return text
 
+    def get_file(self):
+        return self.files
 
     def get_corpus(self):
         """Extract corpus from documents
@@ -93,7 +99,8 @@ class corpusSimID:
             elif(self.file_type=="text"):
                 rawText = self.get_text(self.files[i])
             procText = re.sub('[^A-Za-z0-9]+', ' ', rawText).lower()
-            procText = stemmer.stem(rawText)
+            if self.stem=="yes":
+                procText = stemmer.stem(rawText)
             text_files.append([self.files[i], rawText, procText])
         
         return text_files
@@ -146,6 +153,35 @@ class corpusSimID:
         plt.xticks(rotation='vertical')
         plt.yticks(rotation='horizontal')
         plt.show()
+        
+    def saveviz(self, fname, cmap="coolwarm"):
+        """Method for save image and serve in Flask
+        """
+        plt.switch_backend('agg')
+        sim = self.get_similarity()
+        plt.figure(figsize=(25,25))
+        plt.title('Similarity Heatmap')
+        sns.heatmap(sim, cmap=cmap, fmt='.2f', linewidth=0.1, annot=True, xticklabels=self.files, yticklabels=self.files, annot_kws={"size":6})
+        plt.xticks(rotation='vertical')
+        plt.yticks(rotation='horizontal')
+        plt.savefig(basedir+'/static/images/{}.png'.format(fname))
+        plt.close()
+        
+    def get_dataframe(self):
+        sim = self.get_similarity()
+        fList =  self.get_file()
+        df = pd.DataFrame(np.zeros((len(sim)*len(sim), 3)), columns=['a','b','c'])
+        k = 0
+        for i in range (len(sim)):
+            for j in range (len(sim)):
+                df.iloc[k,0] = fList[i]
+                df.iloc[k,1] = fList[j]
+                df.iloc[k,2] = sim[i][j]
+                k = k+1
+        df['c'] = (df['c'].round(2)) * 100
+        return df
+        
+        
         
         
 if __name__=='__main__':

@@ -13,16 +13,24 @@
 ### Data placement
     1. Place all documents with same file extension in one folder e.g. D:\documents\
 
-### Running program
+### Running on terminal
     1. cd to plagiarismchecker local repo
     2. Activate environment
-    2. Run python plagiarismchecker.py
-    5. Enter documents directory 'D:\documents\'
-    6. Enter document type (word/pdf/text) 'word'
+    3. Run python plagiarismchecker.py
+    4. Enter documents directory 'D:\documents\'
+    5. Enter document type (word/pdf/text) 'word'
+
+### Running on browser
+    1. cd to plagiarismchecker local repo
+    2. Activate environment
+    3. Run python app.py
+    4. Enter http://127.0.0.1:5000/
+
+*note: you can choose either running program by script on cmd/powershell/bash, etc or on web app*
 
 
-## Notebook
-Check [this notebook](https://github.com/mdsatria/plagiarismchecker/blob/master/plagiarismchecker.ipynb)
 
 ## Output
-![IMAGE ALT TEXT HERE](https://raw.githubusercontent.com/mdsatria/plagiarismchecker/master/resources/screenshot.png)
+![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/blob/master/resources/terminal.gif?raw=true)*running script on powershell*
+
+![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/blob/master/resources/flask.gif?raw=true)*running web app*
