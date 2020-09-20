@@ -148,9 +148,11 @@ class corpusSimID:
             cmap: colormap for heatmap. see https://matplotlib.org/examples/color/colormaps_reference.html for colormap list
         """
         sim = self.get_similarity()
+        plt.figure(figsize=(10,8))
         plt.title('Similarity Heatmap')
         if labels:
-            sns.heatmap(sim, cmap=cmap, linewidth=0.2, annot=True,  xticklabels=self.files, yticklabels=self.files)
+            sns.set(font_scale=0.8)
+            sns.heatmap(sim*100, cmap=cmap, fmt='.2f', linewidth=0.1, annot=True,  xticklabels=self.files, yticklabels=self.files)
         else:
             sns.heatmap(sim, cmap=cmap, linewidth=0.2, annot=True)
         plt.xticks(rotation='vertical')
@@ -188,11 +190,11 @@ class corpusSimID:
         
 if __name__=='__main__':
     directory = input("Enter directory file: ")
-    file_type = input("Enter file type (word/pdf/text): ")
+    file_type = input("Enter file type (word/pdf/text): ").lower()
     if file_type not in ('word', 'pdf', 'text'):
         print("Unknown file type !")
     if not (os.path.exists(directory)):
         print("Directory not found !")
     if (os.path.exists(directory)) and (file_type in ('word', 'pdf', 'text')):
-        data = corpusSimID(directory+'/', file_type)
+        data = corpusSimID(directory+'/', "no", file_type)
         data.visualize()
