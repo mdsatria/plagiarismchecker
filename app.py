@@ -11,6 +11,7 @@ from bokeh import palettes
 from bokeh.models import LinearColorMapper, ColorBar, PrintfTickFormatter
 
 from math import pi
+import os
 
 """
     Create Plot
@@ -87,6 +88,21 @@ def make_plot(df, corp, color_palette):
     return js_resources, css_resources, script, div
 
 
+def check_path(directory, file_type):
+    if (os.path.isdir(directory)) == False:
+        return True
+
+    path = os.listdir(directory)
+    if file_type == "text":
+        lst = [i for i in path if i.endswith(".txt")]
+    elif file_type == "word":
+        lst = [i for i in path if i.endswith(".docx")]
+    else:
+        lst = [i for i in path if i.endswith(".pdf")]
+    if not lst:
+        return True
+
+
 """
     SERVER RUN
 """
@@ -103,6 +119,10 @@ def index():
         ftype = request.form.get("filetype")
         stemOn = request.form.get("stem")
         color_palette = int(request.form.get("npalette"))
+
+        isNotExist = check_path(path, ftype)
+        if isNotExist:
+            return render_template("error.html")
 
         # calculate similarity
         simClass = corpusSimID(path, stemOn, ftype)
