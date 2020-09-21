@@ -11,73 +11,86 @@ from bokeh.models import LinearColorMapper, ColorBar, PrintfTickFormatter
 
 from math import pi
 
+"""
+    Create Plot
+"""
+def make_plot(df, corp, color_palette):
+    
+    palette_list = [palettes.viridis(100), palettes.inferno(100), palettes.magma(100), palettes.plasma(100)]        
+    colors = list(reversed(palette_list[color_palette]))
+    mapper = LinearColorMapper(palette=colors, low=0, high=100)
+    
+    TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
+    TOOLTIPS = """
+                <div>
+                    <div>
+                    <span style="font-size: 20px; font-weight: bold;">@c%</span>
+                    </div>
+                    <div>
+                        <span style="font-size: 14px; font-style: italic;">@a & @b</span>
+                    </div>
+                </div>
+    """
+    
+    hm = figure(x_range=corp, y_range=list(reversed(corp)), x_axis_location="above",
+                plot_width=900,
+                plot_height=900,
+                tools=TOOLS,
+                toolbar_location='below',
+                tooltips=TOOLTIPS)
+                # tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
+
+    hm.grid.grid_line_color = None
+    hm.axis.axis_line_color = None
+    hm.axis.major_tick_line_color = None
+    hm.axis.major_label_text_font_size = "8pt"
+    hm.axis.major_label_standoff = 0
+    hm.xaxis.major_label_orientation = pi / 3
+
+    hm.rect(x="a", y="b", source=df,
+            width=1, height=1, line_color="#ffffff",
+            fill_color={'field': 'c', 'transform': mapper}
+            )
+
+    color_bar = ColorBar(color_mapper=mapper,
+                            formatter=PrintfTickFormatter(format="%d%%"),
+                            major_label_text_font_size="10pt",label_standoff=10,
+                            border_line_color=None, location=(0, 0))
+    
+    hm.add_layout(color_bar, 'right')
+
+    js_resources = INLINE.render_js()
+    css_resources = INLINE.render_css()
+    script, div = components(hm)
+    
+    return js_resources, css_resources, script, div
+
+
+"""
+    SERVER RUN
+"""
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # ts = time.time() * 1000
-        # ts = ts + random.randint(0,9999)
+
+        # get data
         path = request.form.get("path")
         path = path + "/"
         ftype = request.form.get("filetype")
         stemOn = request.form.get("stem")
-        nPalette = int(request.form.get("npalette"))
-        # cmap = request.form.get("cmap")
-        obj = corpusSimID(path, stemOn, ftype)
-        df = obj.get_dataframe()
-        corp = obj.get_file()
-        # return render_template('result.html', url='/static/images/{}.png'.format(ts))
-        
-        palette_list = [palettes.viridis(100), palettes.inferno(100), palettes.magma(100), palettes.plasma(100)]
-        
-        colors = list(reversed(palette_list[nPalette]))
-        mapper = LinearColorMapper(palette=colors, low=0, high=100)
-        
-        TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
-        TOOLTIPS = """
-                    <div>
-                        <div>
-                        <span style="font-size: 20px; font-weight: bold;">@c%</span>
-                        </div>
-                        <div>
-                            <span style="font-size: 14px; font-style: italic;">@a & @b</span>
-                        </div>
-                    </div>
-        """
-        
-        hm = figure(x_range=corp, y_range=list(reversed(corp)), x_axis_location="above",
-                    plot_width=900,
-                    plot_height=900,
-                    tools=TOOLS,
-                    toolbar_location='below',
-                    tooltips=TOOLTIPS)
-                    # tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
+        color_palette = int(request.form.get("npalette"))
 
-        hm.grid.grid_line_color = None
-        hm.axis.axis_line_color = None
-        hm.axis.major_tick_line_color = None
-        hm.axis.major_label_text_font_size = "8pt"
-        hm.axis.major_label_standoff = 0
-        hm.xaxis.major_label_orientation = pi / 3
-
-        hm.rect(x="a", y="b", source=df,
-                width=1, height=1, line_color="#ffffff",
-                fill_color={'field': 'c', 'transform': mapper}
-                )
-
-        color_bar = ColorBar(color_mapper=mapper,
-                             formatter=PrintfTickFormatter(format="%d%%"),
-                             major_label_text_font_size="10pt",label_standoff=10,
-                             border_line_color=None, location=(0, 0))
+        # calculate similarity
+        simClass = corpusSimID(path, stemOn, ftype)
+        df = simClass.get_dataframe()
+        corp = simClass.get_file()
+       
+        # create plot
+        js_resources, css_resources, script, div = make_plot(df, corp, color_palette)
         
-        hm.add_layout(color_bar, 'right')
-
-        js_resources = INLINE.render_js()
-        css_resources = INLINE.render_css()
-
-        # render template
-        script, div = components(hm)
+        # render html
         html = render_template(
             'result.html',
             plot_script=script,
