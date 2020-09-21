@@ -1,27 +1,26 @@
-{% extends 'layout.html' %}
-{% block body %}
+{% extends 'layout.html' %} {% block body %}
 
 <div class="row">
   <div class="col-md-8 order-md-1">
-      <h4 class="mb-3">Similarity Check</h4>
+    <h4 class="mb-3">Similarity Check</h4>
 
-      <form class="needs-validation" action="{{ url_for('index')}}" method="post">
+    <form class="needs-validation" action="{{ url_for('index')}}" method="post">
       <div class="mb-3">
-          <label>Directory</label>           
-          <input class="form-control" name="path" required="">  
+        <label>Directory</label>
+        <input class="form-control" name="path" required="" />
       </div>
 
-      <div class="mb-3">                
-              <label for="ftype">File Type</label>
-              <select class="custom-select d-block w-100" name="filetype" required="">
-                <option value="">Choose...</option>
-                <option value="word">word document(*.docx)</option>
-                <option value="pdf">pdf document(*.pdf)</option>
-                <option value="text">text document(*.txt)</option>
-              </select>
+      <div class="mb-3">
+        <label for="ftype">File Type</label>
+        <select class="custom-select d-block w-100" name="filetype" required="">
+          <option value="">Choose...</option>
+          <option value="word">word document(*.docx)</option>
+          <option value="pdf">pdf document(*.pdf)</option>
+          <option value="text">text document(*.txt)</option>
+        </select>
       </div>
 
-      <div class="mb-3">                
+      <div class="mb-3">
         <label for="mtype">Mode</label>
         <select class="custom-select d-block w-100" name="stem" required="">
           <option value="">Choose...</option>
@@ -30,7 +29,7 @@
         </select>
       </div>
 
-      <div class="mb-3">                
+      <div class="mb-3">
         <label for="ctype">Color Palettes</label>
         <select class="custom-select d-block w-100" name="npalette" required="">
           <option value="">Choose...</option>
@@ -41,10 +40,12 @@
         </select>
       </div>
 
-      <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
-      </form>
+      <hr class="mb-4" />
+      <button class="btn btn-primary btn-lg btn-block" type="submit">
+        Submit
+      </button>
+    </form>
   </div>
-</div>  
+</div>
 
 {% endblock %}

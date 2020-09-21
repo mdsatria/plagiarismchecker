@@ -5,6 +5,7 @@ from plagiarismchecker import corpusSimID
 from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import INLINE
+
 # from bokeh.util.string import encode_utf8
 from bokeh import palettes
 from bokeh.models import LinearColorMapper, ColorBar, PrintfTickFormatter
@@ -14,12 +15,19 @@ from math import pi
 """
     Create Plot
 """
+
+
 def make_plot(df, corp, color_palette):
-    
-    palette_list = [palettes.viridis(100), palettes.inferno(100), palettes.magma(100), palettes.plasma(100)]        
+
+    palette_list = [
+        palettes.viridis(100),
+        palettes.inferno(100),
+        palettes.magma(100),
+        palettes.plasma(100),
+    ]
     colors = list(reversed(palette_list[color_palette]))
     mapper = LinearColorMapper(palette=colors, low=0, high=100)
-    
+
     TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
     TOOLTIPS = """
                 <div>
@@ -31,14 +39,18 @@ def make_plot(df, corp, color_palette):
                     </div>
                 </div>
     """
-    
-    hm = figure(x_range=corp, y_range=list(reversed(corp)), x_axis_location="above",
-                plot_width=900,
-                plot_height=900,
-                tools=TOOLS,
-                toolbar_location='below',
-                tooltips=TOOLTIPS)
-                # tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
+
+    hm = figure(
+        x_range=corp,
+        y_range=list(reversed(corp)),
+        x_axis_location="above",
+        plot_width=900,
+        plot_height=900,
+        tools=TOOLS,
+        toolbar_location="below",
+        tooltips=TOOLTIPS,
+    )
+    # tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
 
     hm.grid.grid_line_color = None
     hm.axis.axis_line_color = None
@@ -47,22 +59,31 @@ def make_plot(df, corp, color_palette):
     hm.axis.major_label_standoff = 0
     hm.xaxis.major_label_orientation = pi / 3
 
-    hm.rect(x="a", y="b", source=df,
-            width=1, height=1, line_color="#ffffff",
-            fill_color={'field': 'c', 'transform': mapper}
-            )
+    hm.rect(
+        x="a",
+        y="b",
+        source=df,
+        width=1,
+        height=1,
+        line_color="#ffffff",
+        fill_color={"field": "c", "transform": mapper},
+    )
 
-    color_bar = ColorBar(color_mapper=mapper,
-                            formatter=PrintfTickFormatter(format="%d%%"),
-                            major_label_text_font_size="10pt",label_standoff=10,
-                            border_line_color=None, location=(0, 0))
-    
-    hm.add_layout(color_bar, 'right')
+    color_bar = ColorBar(
+        color_mapper=mapper,
+        formatter=PrintfTickFormatter(format="%d%%"),
+        major_label_text_font_size="10pt",
+        label_standoff=10,
+        border_line_color=None,
+        location=(0, 0),
+    )
+
+    hm.add_layout(color_bar, "right")
 
     js_resources = INLINE.render_js()
     css_resources = INLINE.render_css()
     script, div = components(hm)
-    
+
     return js_resources, css_resources, script, div
 
 
@@ -71,9 +92,10 @@ def make_plot(df, corp, color_palette):
 """
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    if request.method == 'POST':
+    if request.method == "POST":
 
         # get data
         path = request.form.get("path")
@@ -86,19 +108,21 @@ def index():
         simClass = corpusSimID(path, stemOn, ftype)
         df = simClass.get_dataframe()
         corp = simClass.get_file()
-       
+
         # create plot
-        js_resources, css_resources, script, div = make_plot(df, corp, color_palette)
-        
+        js_resources, css_resources, script, div = make_plot(
+            df, corp, color_palette)
+
         return render_template(
-            'result.html',
+            "result.html",
             plot_script=script,
             plot_div=div,
             js_resources=js_resources,
             css_resources=css_resources,
         )
     else:
-        return render_template('home.html')
+        return render_template("home.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
