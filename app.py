@@ -32,13 +32,24 @@ def index():
         mapper = LinearColorMapper(palette=colors, low=0, high=100)
         
         TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
+        TOOLTIPS = """
+                    <div>
+                        <div>
+                        <span style="font-size: 20px; font-weight: bold;">@c%</span>
+                        </div>
+                        <div>
+                            <span style="font-size: 14px; font-style: italic;">@a & @b</span>
+                        </div>
+                    </div>
+        """
         
         hm = figure(x_range=corp, y_range=list(reversed(corp)), x_axis_location="above",
                     plot_width=900,
                     plot_height=900,
                     tools=TOOLS,
                     toolbar_location='below',
-                    tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
+                    tooltips=TOOLTIPS)
+                    # tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
 
         hm.grid.grid_line_color = None
         hm.axis.axis_line_color = None

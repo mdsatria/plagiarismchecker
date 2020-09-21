@@ -183,7 +183,7 @@ class corpusSimID:
                 df.iloc[k,1] = fList[j]
                 df.iloc[k,2] = sim[i][j]
                 k = k+1
-        df['c'] = (df['c'].round(2)) * 100
+        df['c'] = (df['c']*100).round(2)
         return df
 
         
