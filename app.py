@@ -5,7 +5,7 @@ from plagiarismchecker import corpusSimID
 from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import INLINE
-from bokeh.util.string import encode_utf8
+# from bokeh.util.string import encode_utf8
 from bokeh import palettes
 from bokeh.models import LinearColorMapper, ColorBar, PrintfTickFormatter
 
@@ -24,10 +24,10 @@ def make_plot(df, corp, color_palette):
     TOOLTIPS = """
                 <div>
                     <div>
-                    <span style="font-size: 20px; font-weight: bold;">@c%</span>
+                    <span style="font-size: 20px; font-weight: bold;">score: @c%</span>
                     </div>
                     <div>
-                        <span style="font-size: 14px; font-style: italic;">@a & @b</span>
+                        <span style="font-size: 16px; font-style: italic;">@a & @b</span>
                     </div>
                 </div>
     """
@@ -90,15 +90,13 @@ def index():
         # create plot
         js_resources, css_resources, script, div = make_plot(df, corp, color_palette)
         
-        # render html
-        html = render_template(
+        return render_template(
             'result.html',
             plot_script=script,
             plot_div=div,
             js_resources=js_resources,
             css_resources=css_resources,
         )
-        return encode_utf8(html)
     else:
         return render_template('home.html')
 
