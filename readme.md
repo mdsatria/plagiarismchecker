@@ -33,4 +33,4 @@
 ## Output
 ![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/raw/master/resources/run_terminal.gif)*running script on powershell*
 
-![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/raw/master/resources/run_web.gif)*running web app*
+![IMAGE ALT TEXT HERE](https://github.com/mdsatria/plagiarismchecker/raw/master/resources/run_web2.gif)*running web app*
