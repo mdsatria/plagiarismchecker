@@ -22,13 +22,16 @@ def index():
         path = path + "/"
         ftype = request.form.get("filetype")
         stemOn = request.form.get("stem")
+        nPalette = int(request.form.get("npalette"))
         # cmap = request.form.get("cmap")
         obj = corpusSimID(path, stemOn, ftype)
         df = obj.get_dataframe()
         corp = obj.get_file()
         # return render_template('result.html', url='/static/images/{}.png'.format(ts))
         
-        colors = list(reversed(palettes.viridis(100)))
+        palette_list = [palettes.viridis(100), palettes.inferno(100), palettes.magma(100), palettes.plasma(100)]
+        
+        colors = list(reversed(palette_list[nPalette]))
         mapper = LinearColorMapper(palette=colors, low=0, high=100)
         
         TOOLS = "hover,save,pan,box_zoom,reset,wheel_zoom"
