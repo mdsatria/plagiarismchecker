@@ -5,8 +5,6 @@ from plagiarismchecker import corpusSimID
 from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import INLINE
-
-# from bokeh.util.string import encode_utf8
 from bokeh import palettes
 from bokeh.models import LinearColorMapper, ColorBar, PrintfTickFormatter
 
@@ -40,6 +38,7 @@ def make_plot(df, corp, color_palette):
                     </div>
                 </div>
     """
+    # tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
 
     hm = figure(
         x_range=corp,
@@ -50,8 +49,7 @@ def make_plot(df, corp, color_palette):
         tools=TOOLS,
         toolbar_location="below",
         tooltips=TOOLTIPS,
-    )
-    # tooltips=[('score','@c%'), ('doc_1', '@a'), ('doc_2', '@b')])
+    )    
 
     hm.grid.grid_line_color = None
     hm.axis.axis_line_color = None
@@ -117,7 +115,7 @@ def index():
         path = request.form.get("path")
         path = path + "/"
         ftype = request.form.get("filetype")
-        stemOn = request.form.get("stem")
+        stemOn = request.form.get("stemOn")
         color_palette = int(request.form.get("npalette"))
 
         isNotExist = check_path(path, ftype)
