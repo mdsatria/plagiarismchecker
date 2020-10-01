@@ -115,7 +115,7 @@ def index():
         path = request.form.get("path")
         path = path + "/"
         ftype = request.form.get("filetype")
-        stemOn = request.form.get("stemOn")
+        stemOn = request.form.get("stem")
         color_palette = int(request.form.get("npalette"))
 
         isNotExist = check_path(path, ftype)
