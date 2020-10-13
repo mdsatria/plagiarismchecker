@@ -4,10 +4,11 @@
     Python 3.+
 
 ## Installation Guide :
-    1. Create python environment
-    2. Activate environment
-    3. Clone repo
-    4. Install dependencies 'pip install -r requirements.txt'
+    1. Install Python, set path
+    2. Create python environment in new folder 'python -m venv pathToNewFolder'
+    3. Activate environment 'pathToNewFolder\scripts\activate'
+    4. Clone repo, cd to repo
+    5. Install dependencies 'pip install -r requirements.txt'
 
 ## Usage Guide :
 ### Data placement
